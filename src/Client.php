@@ -16,7 +16,7 @@ class Client
     {
         $endpoint = $arguments[0] ?? '';
         $parameters = $arguments[1] ?? [];
-        
+
         try {
             return $this->call($endpoint, $parameters, strtoupper($name));
         } catch (\Throwable $e) {
@@ -33,6 +33,7 @@ class Client
      */
     protected function call(Endpoints $endpoint, array $parameters = [], $method = 'POST'): array
     {
+        $endpoint = $endpoint->value;
         $contentMD5 = $this->getDigest(json_encode($parameters));
         $contentType = 'application/json';
         $date = $this->getGMTDate();

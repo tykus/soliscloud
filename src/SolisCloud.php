@@ -9,7 +9,7 @@ class SolisCloud
         // 
     }
 
-    public function getUserStationList($page = 1, $perPage = 10): array
+    public function getUserStationsList($page = 1, $perPage = 10): array
     {
         return $this->client->post(Endpoints::USER_STATIONS_LIST, ['pageNo' => $page, 'pageSize' => $perPage]);
     }
