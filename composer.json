@@ -45,10 +45,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Tykus\\SoliscloudClient\\SolisCloudServiceProvider"
+                "Tykus\\SolisCloud\\SolisCloudServiceProvider"
             ],
             "aliases": {
-                "SolisCloud": "Tykus\\SoliscloudClient\\SolisCloudFacade"
+                "SolisCloud": "Tykus\\SolisCloud\\SolisCloudFacade"
             }
         }
     }

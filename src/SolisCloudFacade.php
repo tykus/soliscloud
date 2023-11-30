@@ -1,13 +1,13 @@
 <?php
 
-namespace Tykus\SoliscloudClient;
+namespace Tykus\SolisCloud;
 
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @see \Tykus\SoliscloudClient\Skeleton\SkeletonClass
+ * @see \Tykus\SolisCloud\SolisCloud
  */
-class SolisCloudClientFacade extends Facade
+class SolisCloudFacade extends Facade
 {
     /**
      * Get the registered name of the component.

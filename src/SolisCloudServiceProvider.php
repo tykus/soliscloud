@@ -1,6 +1,6 @@
 <?php
 
-namespace Tykus\SoliscloudClient;
+namespace Tykus\SolisCloud;
 
 use Illuminate\Support\ServiceProvider;
 use Tykus\SolisCloud\Client;
