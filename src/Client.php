@@ -3,13 +3,16 @@ namespace Tykus\SolisCloud;
 
 use DateTime;
 use DateTimeZone;
+use GuzzleHttp\Client as GuzzleHttpClient;
 use Illuminate\Support\Facades\Http;
 
 class Client
 {
+    private GuzzleHttpClient $client;
+
     public function __construct(private string $keyId, private string $keySecret, private string $baseUrl)
     {
-        //
+        $this->client = new GuzzleHttpClient(['base_uri' => $baseUrl]);
     }
 
     public function __call($name, $arguments): mixed
@@ -39,13 +42,18 @@ class Client
         $date = $this->getGMTDate();
         $signature = "{$method}\n{$contentMD5}\n{$contentType}\n{$date}\n{$endpoint}";
 
-        return Http::withHeaders([
-            'Authorization' => "API {$this->keyId}:{$this->signSignature($signature)}",
-            'Content-Type' => $contentType,
-            'Content-MD5' => $contentMD5,
-            'Date' => $date,
-        ])->{$method}($this->getUrl($endpoint), $parameters)
-        ->json('data');
+
+        $response = $this->client->request($method, $endpoint, [
+            'headers' => [
+                'Authorization' => "API {$this->keyId}:{$this->signSignature($signature)}",
+                'Content-Type' => $contentType,
+                'Content-MD5' => $contentMD5,
+                'Date' => $date,
+            ],
+            'json' => $parameters,
+        ]);
+
+        return json_decode($response->getBody(), true);
     }
 
     protected function getUrl(string $endpoint): string
