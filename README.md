@@ -11,17 +11,25 @@ A PHP client library for the SolisCloud API. Get data from your solar panels ins
 You can install the package via composer:
 
 ```bash
-composer require tykus/soliscloud-client
+composer require tykus/soliscloud
 ```
 
-## Usage
+## Basic Usage
 
 ```php
 // Initialize the client
-$client = new Tykus\SolisCloudClient($keyId, $keySecret);
+$client = new Tykus\SolisCloud\Client($keyId, $keySecret);
+
+// Get an instance of the SolisCloud class 
+$soliscloud = new Tykus\SolisCloud\SolisCloud($client);
 
 // Get the current data for the given Station.
-$client->getStationDetail($stationId);
+$soliscloud->getStationDetail($stationId);
+```
+
+## Using the Facade in Laravel
+```
+SolisCloud::getStationDetail($stationId);
 ```
 
 ### Testing
