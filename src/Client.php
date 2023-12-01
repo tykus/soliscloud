@@ -4,11 +4,12 @@ namespace Tykus\SolisCloud;
 use DateTime;
 use DateTimeZone;
 use GuzzleHttp\Client as GuzzleHttpClient;
-use Illuminate\Support\Facades\Http;
+use GuzzleHttp\Psr7\Response ;
 
 class Client
 {
     private GuzzleHttpClient $client;
+    private Response $response;
 
     public function __construct(private string $keyId, private string $keySecret, private string $baseUrl)
     {
@@ -20,11 +21,7 @@ class Client
         $endpoint = $arguments[0] ?? '';
         $parameters = $arguments[1] ?? [];
 
-        try {
-            return $this->call($endpoint, $parameters, strtoupper($name));
-        } catch (\Throwable $e) {
-            dd($e->getMessage());
-        }
+        return $this->call($endpoint, $parameters, strtoupper($name));
     }
 
 
@@ -34,7 +31,7 @@ class Client
      * @param array $parameters Request payload
      * @return array
      */
-    protected function call(Endpoints $endpoint, array $parameters = [], $method = 'POST'): array
+    protected function call(Endpoints $endpoint, array $parameters = [], $method = 'POST'): self
     {
         $endpoint = $endpoint->value;
         $contentMD5 = $this->getDigest(json_encode($parameters));
@@ -43,7 +40,7 @@ class Client
         $signature = "{$method}\n{$contentMD5}\n{$contentType}\n{$date}\n{$endpoint}";
 
 
-        $response = $this->client->request($method, $endpoint, [
+        $this->response = $this->client->request($method, $endpoint, [
             'headers' => [
                 'Authorization' => "API {$this->keyId}:{$this->signSignature($signature)}",
                 'Content-Type' => $contentType,
@@ -53,7 +50,17 @@ class Client
             'json' => $parameters,
         ]);
 
-        return json_decode($response->getBody(), true);
+        return $this;
+    }
+
+    public function body(): string
+    {
+        return $this->response->getBody();
+    }
+
+    public function json(?string $key = null): array
+    {
+        return json_decode($this->body(), true);
     }
 
     protected function getUrl(string $endpoint): string

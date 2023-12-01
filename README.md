@@ -28,6 +28,11 @@ $soliscloud->getStationDetail($stationId);
 ```
 
 ## Using the Facade in Laravel
+Place credentials in environment variables in `.env` file using the folloiwng keys:
+- `SOLISCLOUD_KEY_ID`
+- `SOLISCLOUD_KEY_SECRET`
+- `SOLISCLOUD_API_URL`
+
 ```
 SolisCloud::getStationDetail($stationId);
 ```

@@ -11,12 +11,18 @@ class SolisCloud
 
     public function getUserStationsList($page = 1, $perPage = 10): array
     {
-        return $this->client->post(Endpoints::USER_STATIONS_LIST, ['pageNo' => $page, 'pageSize' => $perPage]);
+        return $this->client
+            ->post(Endpoints::USER_STATIONS_LIST, ['pageNo' => $page, 'pageSize' => $perPage])
+            ->json('data');
+
     }
 
     public function getStationDetail(int $stationId): array
     {
-        return $this->client->post(Endpoints::STATION_DETAIL, ['id' => $stationId]);
+        return $this->client
+            ->post(Endpoints::STATION_DETAIL, ['id' => $stationId])
+            ->json('data');
+
     }
 
     // public function getStationDetailList(): array
