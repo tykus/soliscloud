@@ -1,10 +1,11 @@
 <?php
+
 namespace Tykus\SolisCloud;
 
 use DateTime;
 use DateTimeZone;
 use GuzzleHttp\Client as GuzzleHttpClient;
-use GuzzleHttp\Psr7\Response ;
+use GuzzleHttp\Psr7\Response;
 
 class Client
 {
@@ -60,7 +61,11 @@ class Client
 
     public function json(?string $key = null): array
     {
-        return json_decode($this->body(), true);
+        $payload = json_decode($this->body(), true);
+        if ($key) {
+            return $payload[$key] ?? [];
+        }
+        return $payload;
     }
 
     protected function getUrl(string $endpoint): string
