@@ -25,7 +25,7 @@ class SolisCloudServiceProvider extends ServiceProvider
     public function register()
     {
         // Automatically apply the package configuration
-        $this->mergeConfigFrom(__DIR__ . '/../config/config.php', 'soliscloud');
+        $this->mergeConfigFrom(__DIR__ . '/../../config/config.php', 'soliscloud');
 
         $this->app->bind(Client::class, function () { 
             return new Client(config('soliscloud.key_id'), config('soliscloud.key_secret'), config('soliscloud.api_url'));
